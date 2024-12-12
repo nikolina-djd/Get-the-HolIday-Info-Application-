@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style.css">
+    <title>Holidays all over the world</title>
+</head>
+<body>
+<%- include("partials/header")%>
+<main>
+    <div id="container">
+        <div class="select-a-country">
+            <h2>Select a Country</h2>
+            <form method="post" action="/getCountryAndCode">
+            <div class="enter-input">
+                <p>Please click on "Country" and choose an option</p>
+            </div>
+                <input type="submit" name="Choose_a_Country" id="countires" value="Country" class="country">
+                <% if (locals.getCountryList) { %>
+                <select name="countries" id="countries" value="POST" >
+                        <option value="">--Please Select a Country--</option>
+                        <% if (locals.countriesAndCodes) { %>
+                            <% for( let i = 0; i < countriesAndCodes.length; i++ ) { %>
+                        <option value="<%= countriesAndCodes[i]  %>"><%= countriesAndCodes[i] %></option>
+                        <% } %>
+                        <% }%>
+                </select>  
+                <% } %>  
+                <p class="hint" ><strong>HINT:</strong>  Use the <strong>Country Code</strong> for further investigation!</p>
+            </form>
+        </div>
+       <div id="get-holidays">
+            
+            <div class="get-info get-next-public-holiday">
+                <h2 class="function-title">Get the Next Public Holiday of your country</h2>
+                <form action="/getNextPublicHolidays" method="post">
+                    <p class="what-to-do">Please enter the Country Code to get the following Public Holiday</p>
+                    <div class="enter-input">
+                        <label for="countryCode"><strong>Code:</strong></label>
+                        <input type="text" name="countryCodeforNextPublicHoliday" id="countryCode" class="type-text">
+                    </div>
+                    <div class="enter-input">
+                        <input type="submit" value="Show Results" class="show-hide-result">
+                        <button class="show-hide-result" onclick="hideFunction()">Hide results</button>
+                    </div>
+                </form>
+                <% if (locals.arrayOfNextPublicHolidays) { %>
+                    <div id="Public_Holidays" >
+                        <p>Date: <%= arrayOfNextPublicHolidays[0]["date"] %></p>
+                        <p>LocalName: <%= arrayOfNextPublicHolidays[0]["localName"] %></p>
+                        <p>Name:<%= arrayOfNextPublicHolidays[0]["name"] %></p>  
+                    </div>
+                <% } %>
+                
+            </div>
+            <div class="get-info get-a-public-holiday-for-an-year">
+                <h2 class="function-title">Get the Public holidays for a given year</h2>
+                <form action="/getPublicHolidays" method="post">
+                    <p class="what-to-do">Please enter the Year and the Country Code </p>
+                    <div class="enter-input">
+                        <label for="year"><strong>Year:</strong></label>
+                        <input type="text" name="year" id="year"  class="type-text">
+                    </div>
+                    <div class="enter-input">
+                        <label for="countryCode"><strong>Code:</strong></label>
+                        <input type="text" name="countryCode" id="countryCode" class="type-text" >
+                    </div>
+                    <div class="enter-input">
+                        <input type="submit" value="Show Results" class="show-hide-result">
+                        <button class="show-hide-result" onclick="hideFunction()">Hide results</button>
+                    </div>
+                </form>
+                <% if (locals.arrayOfPublicHolidays) { %>
+                <% for( let i = 0; i < arrayOfPublicHolidays.length; i++ ) { %>
+                    <div id="Public_Holidays" >
+                        <p><strong>Date:</strong> <%= arrayOfPublicHolidays[i]["date"] %></p>
+                        <p><strong>LocalName:</strong><%= arrayOfPublicHolidays[i]["localName"] %></p>
+                        <p><strong>Name:</strong><%= arrayOfPublicHolidays[i]["name"] %></p>  
+                        <hr>
+                    </div> 
+                    <div>
+                    
+                </div>    
+                <% } %>  
+                <% } %>  
+                
+            </div>
+        </div>
+    </div>
+</main>
+ <%- include("partials/footer")%>;
+     <script>
+     function hideFunction() {
+            var x = document.getElementById("Public_Holidays");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+     }
+     </script>
+</body>
+</html> 
